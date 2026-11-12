@@ -16,6 +16,35 @@ Q(next) = T ⊕ Q   (Q(next) = Q if T = 0, Q(next) = Q' if T = 1)
 
 ## Design / RTL Program
 // gedit dff_tff.v
+module dff (
+    input  wire clk,   // clock
+    input  wire rst,   // asynchronous active-high reset
+    input  wire D,     // data input
+    output reg  Q      // output
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            Q <= 1'b0;
+        else
+            Q <= D;
+    end
+endmodule
+ 
+module tff (
+    input  wire clk,   // clock
+    input  wire rst,   // asynchronous active-high reset
+    input  wire T,     // toggle input
+    output reg  Q      // output
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            Q <= 1'b0;
+        else if (T)
+            Q <= ~Q;
+        else
+            Q <= Q;
+    end
+endmodule
 
  ```
 module dff (
@@ -110,6 +139,16 @@ endmodule
 ## Truth Table
 
 <img width="349" height="264" alt="image" src="https://github.com/user-attachments/assets/d05e6f9d-ff68-466e-9eb8-52e22fa1b961" />
+D Flip-Flop (rising clock edge)
+rst	D	Q(next)
+1	X	0
+0	0	0
+0	1	1
+T Flip-Flop (rising clock edge)
+rst	T	Q(next)
+1	X	0
+0	0	Q (no change)
+0	1	Q' (toggle)
 
 ## Simulation Procedure
 
@@ -165,7 +204,10 @@ Q(next) = T ⊕ Q   (T Flip-Flop)
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis, matching the expected truth table.
 
 ## Output
-<img width="595" height="369" alt="image" src="https://github.com/user-attachments/assets/38290e4d-a813-4e0c-b891-68044c90623b" />
+<img width="1920" height="1080" alt="Screenshot (107)" src="https://github.com/user-attachments/assets/993a01d2-a772-4e2c-8bb0-f75740210ce0" />
+
+<img width="1920" height="1080" alt="Screenshot (108)" src="https://github.com/user-attachments/assets/6913dc50-f31b-46a2-889b-b0b01e674c55" />
+
 
 ## Viva-Voce Questions
 
